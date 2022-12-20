@@ -11,7 +11,11 @@ const io = require("socket.io")(server);
 // Deploy public directory
 app.use(express.static(__dirname + "/public"));
 
-io.on("connection", () => {
+io.on("connection", (socket) => {
+  socket.emit("welcome", {
+    msg: "Bienvenido al servidor",
+    date: new Date(),
+  });
   console.log("A client connected to the server");
 });
 
