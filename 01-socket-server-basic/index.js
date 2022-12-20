@@ -21,6 +21,14 @@ io.on("connection", (socket) => {
   socket.on("msg-client", (data) => {
     console.log("Client says:", data);
   });
+
+  socket.on("chat-to-server", (data) => {
+    console.log(data);
+
+    // tell all clients that a new message arrived!
+    // we do so by using io instead of socket!
+    io.emit("new-message", data);
+  });
 });
 
 server.listen(8080, () => {

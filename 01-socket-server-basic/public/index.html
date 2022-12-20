@@ -22,13 +22,13 @@
         <div class="col-8">
           <input
             type="text"
-            id="txt-msg"
+            id="txtMessage"
             placeholder="Mensaje"
             class="form-control"
           />
         </div>
         <div class="col">
-          <button class="btn btn-primary">Enviar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
         </div>
       </div>
     </form>
@@ -48,10 +48,27 @@
     ></script>
     <script>
       const socket = io("http://localhost:8080");
+      const form = document.getElementById("myForm");
+      const messages = document.getElementById("myMessages");
+      const txtMessage = document.getElementById("txtMessage");
+
+      form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        // get message from form and emit it to the server
+        const newMessage = txtMessage.value;
+        socket.emit("chat-to-server", { text: newMessage });
+      });
 
       socket.on("welcome", (data) => {
         console.log("Message from the server:");
         console.log(data);
+      });
+
+      socket.on("new-message", (data) => {
+        // create new element in the dom
+        const newNode = document.createElement("li");
+        newNode.textContent = data.text;
+        messages.appendChild(newNode);
       });
 
       // Let's talk to the server...
