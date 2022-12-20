@@ -17,6 +17,10 @@ io.on("connection", (socket) => {
     date: new Date(),
   });
   console.log("A client connected to the server");
+
+  socket.on("msg-client", (data) => {
+    console.log("Client says:", data);
+  });
 });
 
 server.listen(8080, () => {

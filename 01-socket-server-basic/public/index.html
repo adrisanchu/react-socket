@@ -22,6 +22,14 @@
         console.log("Message from the server:");
         console.log(data);
       });
+
+      // Let's talk to the server...
+      setTimeout(() => {
+        socket.emit("msg-client", {
+          msg: "My name is",
+          name: "@adrisanchu",
+        });
+      }, 2000);
     </script>
   </body>
 </html>
