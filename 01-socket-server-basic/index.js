@@ -1,36 +1,4 @@
-// Express server
-const express = require("express");
-const app = express();
+const Server = require('./models/server');
 
-// Socket server
-const server = require("http").createServer(app);
-
-// Socket server config
-const io = require("socket.io")(server);
-
-// Deploy public directory
-app.use(express.static(__dirname + "/public"));
-
-io.on("connection", (socket) => {
-  socket.emit("welcome", {
-    msg: "Bienvenido al servidor",
-    date: new Date(),
-  });
-  console.log("A client connected to the server");
-
-  socket.on("msg-client", (data) => {
-    console.log("Client says:", data);
-  });
-
-  socket.on("chat-to-server", (data) => {
-    console.log(data);
-
-    // tell all clients that a new message arrived!
-    // we do so by using io instead of socket!
-    io.emit("new-message", data);
-  });
-});
-
-server.listen(8080, () => {
-  console.log("Server running in port :8080");
-});
+const server = new Server();
+server.execute();
