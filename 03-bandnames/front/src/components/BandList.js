@@ -9,6 +9,24 @@ export const BandList = ({ data }) => {
 		setBands(data);
 	}, [data]);
 
+	// trigger a change every time we type in the input
+	// (this is less efficient than sending the changes to the backend when onBlur!)
+	const changeBandName = (event, id) => {
+		setBands((bands) =>
+			bands.map((band) => {
+				if (band.id === id) {
+					band.name = event.target.value;
+				}
+				return band;
+			})
+		);
+	};
+
+	// this is more convenient when sending data to a server
+	const handleBlur = (id, name) => {
+		console.log({ id, name });
+	};
+
 	const createRows = () => {
 		return bands.map((band) => (
 			<tr key={band.id}>
@@ -16,10 +34,15 @@ export const BandList = ({ data }) => {
 					<button className='btn btn-primary'> +1 </button>
 				</td>
 				<td>
-					<input className='form-control' value={band.name}></input>
+					<input
+						className='form-control'
+						value={band.name}
+						onChange={(event) => changeBandName(event, band.id)}
+						onBlur={() => handleBlur(band.id, band.name)}
+					/>
 				</td>
 				<td>
-					<h3>15</h3>
+					<h3>{band.votes}</h3>
 				</td>
 				<td>
 					<button className='btn btn-danger'>Borrar</button>
