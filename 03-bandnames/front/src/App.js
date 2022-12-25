@@ -66,7 +66,15 @@ function App() {
 	 * @param {string} name The new name of the band
 	 */
 	const changeBandName = (id, name) => {
-		socket.emit('change-name-band', {id, name})
+		socket.emit('change-name-band', { id, name });
+	};
+
+	/**
+	 * Tell the server to add a new band
+	 * @param {string} name The new name of the band
+	 */
+	const addBand = (name) => {
+		socket.emit('add-band', { name });
 	};
 
 	return (
@@ -87,11 +95,16 @@ function App() {
 
 			<div className='row'>
 				<div className='col-8'>
-					<BandList data={bands} vote={vote} deleteBand={deleteBand} changeName={changeBandName} />
+					<BandList
+						data={bands}
+						vote={vote}
+						deleteBand={deleteBand}
+						changeName={changeBandName}
+					/>
 				</div>
 
 				<div className='col-4'>
-					<BandAdd />
+					<BandAdd addBand={addBand} />
 				</div>
 			</div>
 		</div>
