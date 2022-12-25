@@ -44,12 +44,20 @@ function App() {
 		});
 	}, [socket]);
 
-  /**
-   * Tell the server to update a vote
-   * @param {string} id The id of the band
-   */
+	/**
+	 * Tell the server to update a vote
+	 * @param {string} id The id of the band
+	 */
 	const vote = (id) => {
 		socket.emit('vote-band', id);
+	};
+
+	/**
+	 * Tell the server to delete a band
+	 * @param {string} id The id of the band
+	 */
+	const deleteBand = (id) => {
+		socket.emit('delete-band', id);
 	};
 
 	return (
@@ -70,7 +78,7 @@ function App() {
 
 			<div className='row'>
 				<div className='col-8'>
-					<BandList data={bands} vote={vote} />
+					<BandList data={bands} vote={vote} deleteBand={deleteBand} />
 				</div>
 
 				<div className='col-4'>

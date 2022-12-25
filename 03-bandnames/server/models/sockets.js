@@ -21,6 +21,12 @@ class Sockets {
 				this.io.emit('current-bands', this.bandList.getBands());
 			});
 
+			socket.on('delete-band', (id) => {
+				this.bandList.removeBand(id);
+				// refresh all clients connected by resending the list of bands
+				this.io.emit('current-bands', this.bandList.getBands());
+			});
+
 			// Escuchar evento: mensaje-to-server
 			socket.on('mensaje-to-server', (data) => {
 				console.log(data);
