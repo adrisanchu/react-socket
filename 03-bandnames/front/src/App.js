@@ -60,6 +60,15 @@ function App() {
 		socket.emit('delete-band', id);
 	};
 
+	/**
+	 * Tell the server to update a band with a new name
+	 * @param {string} id The id of the band
+	 * @param {string} name The new name of the band
+	 */
+	const changeBandName = (id, name) => {
+		socket.emit('change-name-band', {id, name})
+	};
+
 	return (
 		<div className='container'>
 			<div className='alert'>
@@ -78,7 +87,7 @@ function App() {
 
 			<div className='row'>
 				<div className='col-8'>
-					<BandList data={bands} vote={vote} deleteBand={deleteBand} />
+					<BandList data={bands} vote={vote} deleteBand={deleteBand} changeName={changeBandName} />
 				</div>
 
 				<div className='col-4'>

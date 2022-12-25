@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export const BandList = ({ data, vote, deleteBand }) => {
+export const BandList = ({ data, vote, deleteBand, changeName }) => {
 	const [bands, setBands] = useState(data);
 
 	// For the moment, set the bands to the data passed
@@ -25,6 +25,7 @@ export const BandList = ({ data, vote, deleteBand }) => {
 	// this is more convenient when sending data to a server
 	const handleBlur = (id, name) => {
 		console.log({ id, name });
+		changeName(id, name);
 	};
 
 	const createRows = () => {
