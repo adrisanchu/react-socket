@@ -1,42 +1,13 @@
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
 import { BandAdd } from './components/BandAdd';
 import { BandList } from './components/BandList';
-
-/**
- *
- * @returns {SocketIO} A socketIO connection instance
- */
-const connectSocketServer = () => {
-	const socket = io.connect('http://localhost:8080', {
-		transports: ['websocket'],
-	});
-	return socket;
-};
+import { useSocket } from './hooks/useSocket';
 
 function App() {
 	// handle socket connection
-	const [socket] = useState(connectSocketServer());
-	// handle socket status
-	const [online, setOnline] = useState(false);
+	const { socket, online } = useSocket('http://localhost:8080');
 	// handle the list of bands from the server
 	const [bands, setBands] = useState([]);
-
-	useEffect(() => {
-		setOnline(socket.connected);
-	}, [socket]);
-
-	useEffect(() => {
-		socket.on('connect', () => {
-			setOnline(true);
-		});
-	}, [socket]);
-
-	useEffect(() => {
-		socket.on('disconnect', () => {
-			setOnline(false);
-		});
-	}, [socket]);
 
 	useEffect(() => {
 		socket.on('current-bands', (bands) => {
@@ -69,14 +40,6 @@ function App() {
 		socket.emit('change-name-band', { id, name });
 	};
 
-	/**
-	 * Tell the server to add a new band
-	 * @param {string} name The new name of the band
-	 */
-	const addBand = (name) => {
-		socket.emit('add-band', { name });
-	};
-
 	return (
 		<div className='container'>
 			<div className='alert'>
@@ -104,7 +67,7 @@ function App() {
 				</div>
 
 				<div className='col-4'>
-					<BandAdd addBand={addBand} />
+					<BandAdd />
 				</div>
 			</div>
 		</div>
