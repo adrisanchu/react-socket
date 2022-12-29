@@ -1,16 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { SocketContext } from '../context/SocketContext';
 
-export const BandList = ({ data, vote, deleteBand, changeName }) => {
-	const [bands, setBands] = useState(data);
+export const BandList = () => {
+	const [bands, setBands] = useState([]);
+	const { socket } = useContext(SocketContext);
 
-	// For the moment, set the bands to the data passed
-	// by using useEffect. This will be changed later
 	useEffect(() => {
-		setBands(data);
-	}, [data]);
+		socket.on('current-bands', (bands) => {
+			setBands(bands);
+		});
 
-	// trigger a change every time we type in the input
-	// (this is less efficient than sending the changes to the backend when onBlur!)
+		// triggered when the component is destroyed
+		return () => socket.off('current-bands');
+	}, [socket]);
+
+	/**
+	 * Update input field with the new value typed by user
+	 * @param {React.ChangeEvent} event
+	 * @param {string} id The id of the band
+	 */
 	const changeBandName = (event, id) => {
 		setBands((bands) =>
 			bands.map((band) => {
@@ -22,10 +30,29 @@ export const BandList = ({ data, vote, deleteBand, changeName }) => {
 		);
 	};
 
-	// this is more convenient when sending data to a server
+	/**
+	 * Tell the server to update a band with a new name when on blur
+	 * @param {string} id The id of the band
+	 * @param {string} name The new name of the band
+	 */
 	const handleBlur = (id, name) => {
-		console.log({ id, name });
-		changeName(id, name);
+		socket.emit('change-name-band', { id, name });
+	};
+
+	/**
+	 * Tell the server to update a vote
+	 * @param {string} id The id of the band
+	 */
+	const vote = (id) => {
+		socket.emit('vote-band', id);
+	};
+
+	/**
+	 * Tell the server to delete a band
+	 * @param {string} id The id of the band
+	 */
+	const deleteBand = (id) => {
+		socket.emit('delete-band', id);
 	};
 
 	const createRows = () => {
@@ -48,7 +75,12 @@ export const BandList = ({ data, vote, deleteBand, changeName }) => {
 					<h3>{band.votes}</h3>
 				</td>
 				<td>
-					<button className='btn btn-danger' onClick={() => deleteBand(band.id)}>Borrar</button>
+					<button
+						className='btn btn-danger'
+						onClick={() => deleteBand(band.id)}
+					>
+						Borrar
+					</button>
 				</td>
 			</tr>
 		));
