@@ -1,9 +1,12 @@
 import React from 'react';
+import { useHideMenu } from '../hooks/useHideMenu';
 import { Row, Col, List, Card, Tag, Typography, Divider } from 'antd';
 
 const { Title, Text } = Typography;
 
 function Cola() {
+	useHideMenu(true);
+
 	const data = [
 		{
 			ticketNo: 33,

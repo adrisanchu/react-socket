@@ -1,10 +1,13 @@
 import React from 'react';
+import { useHideMenu } from '../hooks/useHideMenu';
 import { Row, Col, Button, Divider, Typography } from 'antd';
 import { CloseCircleOutlined, RightOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
 function Escritorio() {
+	useHideMenu(false);
+
 	const leaveDesktop = () => {
 		console.log('salir');
 	};

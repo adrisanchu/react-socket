@@ -1,10 +1,14 @@
 import React from 'react';
+import { useHideMenu } from '../hooks/useHideMenu';
 import { Button, Col, Row, Typography } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
 function CrearTicket() {
+	// in this page, the sidebar is not necessary
+	useHideMenu(true);
+
 	const newTicket = () => {
 		console.log('new ticket');
 	};

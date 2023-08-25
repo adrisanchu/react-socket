@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHideMenu } from '../hooks/useHideMenu';
 import { Button, Form, Input, InputNumber, Divider, Typography } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
@@ -6,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const { Title, Text } = Typography;
 
 function Ingresar() {
+	useHideMenu(false);
 
 	const navigate = useNavigate();
 
