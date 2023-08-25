@@ -1,7 +1,7 @@
 import React from 'react';
-import { Row, Col, List, Card, Tag, Typography } from 'antd';
+import { Row, Col, List, Card, Tag, Typography, Divider } from 'antd';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 function Cola() {
 	const data = [
@@ -64,7 +64,27 @@ function Cola() {
 						)}
 					/>
 				</Col>
-				<Col span={12}></Col>
+				<Col span={12}>
+					<Divider> Historial </Divider>
+					<List
+						dataSource={data.slice(3)}
+						renderItem={(item) => (
+							<List.Item>
+								<List.Item.Meta
+									title={`Title No. ${item.ticketNo}`}
+									description={
+										<>
+											<Text type='secondary'>En el escritorio: </Text>
+											<Tag color='magenta'>{item.escritorio}</Tag>
+											<Text type='secondary'>Agente: </Text>
+											<Tag color='volcano'>{item.agente}</Tag>
+										</>
+									}
+								/>
+							</List.Item>
+						)}
+					/>
+				</Col>
 			</Row>
 		</>
 	);
